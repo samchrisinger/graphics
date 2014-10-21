@@ -8,7 +8,20 @@
 //  Ray-tracing stuff //
 ////////////////////////
 Point3D RaySpotLight::getDiffuse(Point3D cameraPosition,RayIntersectionInfo& iInfo){
-	return Point3D();
+  Point3D diff = (iInfo.iCoordinate - direction);
+  
+  float DdL = direction.dot(diff.unit());
+  if(DdL < cos(cutOffAngle)){
+    return Point3D();
+  } 
+  else{
+    float d = diff.length();
+    float numer = pow(DdL, dropOffRate);
+    float denom = (constAtten + linearAtten * d + quadAtten * pow(d, 2));
+    Point3D I_l = color * (numer / denom);
+    
+    return iInfo.material->diffuse.mult(I_l);
+  }
 }
 Point3D RaySpotLight::getSpecular(Point3D cameraPosition,RayIntersectionInfo& iInfo){
 	return Point3D();

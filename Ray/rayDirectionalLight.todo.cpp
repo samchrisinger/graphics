@@ -8,8 +8,8 @@
 ////////////////////////
 Point3D RayDirectionalLight::getDiffuse(Point3D cameraPosition,RayIntersectionInfo& iInfo){
   float NdL = iInfo.normal.dot(iInfo.iCoordinate - direction);
-
-  return (iInfo.material->diffuse * NdL).mult(color);
+  Point3D I_l = color * NdL;
+  return iInfo.material->diffuse.mult(I_l);
 
 }
 Point3D RayDirectionalLight::getSpecular(Point3D cameraPosition,RayIntersectionInfo& iInfo){
