@@ -1,0 +1,3 @@
+Compute ((fun n: nat => n+1) 1).
+
+Compute ((fun n: nat => n * n) 2).
