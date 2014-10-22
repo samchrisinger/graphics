@@ -9,15 +9,15 @@
 ////////////////////////
 double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){  
   // transform ray into modelling coordinates
-  Matrix4D trans = this->getMatrix();
-  Ray3D t_ray = trans * ray;
-  Matrix4D inverse = this->getInverseMatrix();
+  //Matrix4D trans = this->getMatrix();
+  //Ray3D t_ray = trans * ray;
+  //Matrix4D inverse = this->getInverseMatrix();
 
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
-    float hit = s->intersect(t_ray, iInfo, mx);
-    Point3D real = ray(hit);
-    float dist = (real - ray.position).length();
+    float hit = s->intersect(ray, iInfo, mx);
+    //Point3D real = ray(hit);
+    float dist = hit;//(real - ray.position).length();
     
     // if minD is negative or 
     // there is a hit, and the hit is closer than mind
