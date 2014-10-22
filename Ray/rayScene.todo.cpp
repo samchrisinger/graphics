@@ -38,12 +38,15 @@ Point3D RayScene::GetColor(Ray3D ray,int rDepth,Point3D cLimit){
   
   float intersection = group->intersect(ray, info, -1.0f); 
   if (intersection > 0){
-    Point3D ret = Point3D();
-    ret += info.material->emissive;
-    ret += info.material->ambient.mult(ambient); 
+    Point3D ret = info.material->emissive + info.material->ambient.mult(ambient); 
+    int iSectCount = 0;
     for (int i = 0; i < lightNum; i++){      
       RayLight* l = lights[i];
+      if(l->isInShadow(info, group, iSectCount)){
+	continue;
+      }
       ret += l->getDiffuse(camera->position, info);
+      ret += l->getSpecular(camera->position, info);
     }
     return ret;
   }

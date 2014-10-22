@@ -3,6 +3,8 @@
 #include <math.h>
 #include "rayTriangle.h"
 
+const float EP = 0.000001;
+
 ////////////////////////
 //  Ray-tracing stuff //
 ////////////////////////
@@ -64,7 +66,7 @@ double RayTriangle::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
     
     if(mx < 0 || t < mx){
       iInfo.material = material;
-      iInfo.iCoordinate = coord;
+      iInfo.iCoordinate = coord + (plane.normal * EP);
       iInfo.normal = plane.normal;
     }
 

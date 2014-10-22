@@ -8,18 +8,28 @@
 //  Ray-tracing stuff //
 ////////////////////////
 double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){  
-  float minD = -1;
+  // transform ray into modelling coordinates
+  Matrix4D trans = this->getMatrix();
+  Ray3D t_ray = trans * ray;
+  Matrix4D inverse = this->getInverseMatrix();
+
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
-    float hit = s->intersect(ray, iInfo, mx);
+    float hit = s->intersect(t_ray, iInfo, mx);
+    Point3D real = ray(hit);
+    float dist = (real - ray.position).length();
+    
     // if minD is negative or 
     // there is a hit, and the hit is closer than mind
-    if ((minD < 0 && hit > 0) || (hit > 0 && hit < minD)){
-      mx = hit;
-      minD = hit;
+    if ((mx < 0 && dist > 0) || (dist > 0 && dist < mx)){    
+     mx = dist;
+      // fix iInfo
+      //iInfo.iCoordinate = real;
+      // convert the normal
+      //iInfo.normal = this->getNormalMatrix().invert() * iInfo.normal;
     }
   }
-  return minD;
+  return mx;
 }
 
 BoundingBox3D RayGroup::setBoundingBox(void){
