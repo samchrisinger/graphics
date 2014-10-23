@@ -7,27 +7,32 @@
 ////////////////////////
 //  Ray-tracing stuff //
 ////////////////////////
-double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){  
+double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){    
   // transform ray into modelling coordinates
-  //Matrix4D trans = this->getMatrix();
-  //Ray3D t_ray = trans * ray;
-  //Matrix4D inverse = this->getInverseMatrix();
+  Matrix4D inverse = this->getInverseMatrix();
+  Ray3D t_ray = inverse * ray;
 
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
-    float hit = s->intersect(ray, iInfo, mx);
-    //Point3D real = ray(hit);
-    float dist = hit;//(real - ray.position).length();
+    // distance along transformed ray of h
+    float t_hit = s->intersect(t_ray, iInfo, mx);
+    if (t_hit < 0){
+      continue;
+    }
     
+    Matrix4D trans = this->getMatrix();
+    Point3D r_cood = trans * iInfo.iCoordinate;
+    Point3D d = (r_cood - ray.position);
+    float dist = d.length();
     // if minD is negative or 
     // there is a hit, and the hit is closer than mind
     if ((mx < 0 && dist > 0) || (dist > 0 && dist < mx)){    
-     mx = dist;
+      mx = dist;
       // fix iInfo
-      //iInfo.iCoordinate = real;
+      iInfo.iCoordinate = r_cood;
       // convert the normal
-      //iInfo.normal = this->getNormalMatrix().invert() * iInfo.normal;
-    }
+      iInfo.normal = this->getNormalMatrix() * iInfo.normal;
+    } 
   }
   return mx;
 }

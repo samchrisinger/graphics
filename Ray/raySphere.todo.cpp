@@ -25,9 +25,9 @@ double RaySphere::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   float dSq = pow(LdL, 2) - pow(t_ca, 2);
   float rSq = pow(radius, 2);
 
-  if (dSq > rSq){
-    return -1;
-  }
+  //if (dSq > rSq){
+  return -1;
+    /*}
   else{
     float t_hc = sqrt(rSq - dSq);    
     float dist = t_ca - t_hc;
@@ -40,8 +40,8 @@ double RaySphere::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
       iInfo.iCoordinate = coord + (iInfo.normal * EP);
     }
 
-    return dist;      
-  }
+    return dist;
+  }*/     
 }
 BoundingBox3D RaySphere::setBoundingBox(void){
 	return bBox;
