@@ -1,4 +1,0 @@
-#/bin/bash
-
-make
-gdb --args Assignment2 --in Rayfiles/test.ray --out outputs/test.bmp --width 500 --height 500 --rLimit 5 --cLimit 0.0001
