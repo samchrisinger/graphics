@@ -38,7 +38,13 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
 }
 
 BoundingBox3D RayGroup::setBoundingBox(void){
-  return bBox;
+  Point3D plist[sNum * 2];
+  for(int i = 0; i < sNum; i = i + 2){
+    int idx = i / 2;
+    plist[i] = shapes[idx]->bBox.p[0];
+    plist[i + 1] = shapes[idx]->bBox.p[1];
+  }
+  return bBox = BoundingBox3D(plist, sNum * 2);
 }
 
 int StaticRayGroup::set(void){  

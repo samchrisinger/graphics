@@ -28,7 +28,7 @@ Point3D RayDirectionalLight::getSpecular(Point3D cameraPosition,RayIntersectionI
 
   Point3D V = (cameraPosition - iInfo.iCoordinate).unit();  
   Point3D R = iInfo.normal.unit() * (L.dot(iInfo.normal.unit()) * 2) - L;  
-  float alpha = V.dot(R);
+  float alpha = V.dot(R.unit());
   if (alpha < 0){
     return Point3D(0,0,0);
   }

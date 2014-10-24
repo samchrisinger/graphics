@@ -37,7 +37,9 @@ double RaySphere::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   }
 }
 BoundingBox3D RaySphere::setBoundingBox(void){
-	return bBox;
+  Point3D p1 = Point3D(center[0] - radius, center[1] - radius, center[2] - radius);
+  Point3D p2 = Point3D(center[0] + radius, center[1] + radius, center[2] + radius);
+  return bBox = BoundingBox3D(p1, p2);
 }
 
 //////////////////

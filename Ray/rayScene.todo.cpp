@@ -2,13 +2,16 @@
 #include <GL/glut.h>
 #include <math.h>
 
+const float EP = 1e-4;
 
 ///////////////////////
 // Ray-tracing stuff //
 ///////////////////////
 
 Point3D RayScene::Reflect(Point3D v,Point3D n){
-	return Point3D();
+  Point3D L = v.negate().unit();  
+  Point3D R = n.unit() * (L.dot(n.unit()) * 2) - L;  
+  return R.unit();
 }
 
 int RayScene::Refract(Point3D v,Point3D n,double ir,Point3D& refract){
@@ -34,6 +37,10 @@ Ray3D RayScene::GetRay(RayCamera* camera,int i,int j,int width,int height){
 }
 
 Point3D RayScene::GetColor(Ray3D ray,int rDepth,Point3D cLimit){
+  if (rDepth == 0){// || (cLimit[0] < EP || cLimit[1] < EP || cLimit[2] < EP)){
+    return Point3D(0,0,0);
+  }
+
   RayIntersectionInfo info = RayIntersectionInfo();
   
   float intersection = group->intersect(ray, info, -1.0f); 
@@ -42,11 +49,14 @@ Point3D RayScene::GetColor(Ray3D ray,int rDepth,Point3D cLimit){
     int iSectCount = 0;
     for (int i = 0; i < lightNum; i++){      
       RayLight* l = lights[i];
-      if(l->isInShadow(info, group, iSectCount)){
-	continue;
+      if(!l->isInShadow(info, group, iSectCount)){
+	Point3D d = l->getDiffuse(camera->position, info);
+	Point3D s = l->getSpecular(camera->position, info);      
+	ret += d + s;
       }
-      ret += l->getDiffuse(camera->position, info);
-      ret += l->getSpecular(camera->position, info);
+      Point3D K_s = info.material->specular;
+      Ray3D refl = Ray3D(info.iCoordinate + info.normal * EP, Reflect(ray.direction, info.normal));
+      ret += K_s * GetColor(refl, rDepth - 1, cLimit);
     }    
     return ret;
   }
