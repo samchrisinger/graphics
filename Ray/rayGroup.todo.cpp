@@ -17,18 +17,13 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
     // distance along transformed ray
-    float t_hit = s->intersect(t_ray, iInfo, mx);
-    float hit = s->intersect(ray, iInfo, mx);
-    Point3D t_coord = t_ray(t_hit);
-    Point3D coord = ray(hit);
-    
+    float t_hit = s->intersect(t_ray, iInfo, mx);    
     if(t_hit < 0){
       continue;
-    }
-     
-    Point3D r_coord = M * iInfo.iCoordinate;
-    Point3D d = (r_coord - ray.position);
-    float dist = d.length();
+    }     
+    Point3D t_coord = t_ray(t_hit);//iInfo.iCoordinate;
+    Point3D r_coord = M * t_coord;
+    float dist = (r_coord - ray.position).length();
     // if minD is negative or 
     // there is a hit, and the hit is closer than mind
     if ((mx < 0 && dist > 0) || (dist > 0 && dist < mx)){    

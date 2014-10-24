@@ -3,7 +3,7 @@
 #include <math.h>
 #include "rayTriangle.h"
 
-const float EP = 0.000001;
+const float EP = 1e-4;
 
 ////////////////////////
 //  Ray-tracing stuff //
@@ -24,7 +24,6 @@ void RayTriangle::initialize(void){
 double RayTriangle::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
 
   float t = -1.0f * (ray.position.dot(plane.normal) + plane.distance) / (ray.direction.dot(plane.normal));
-    
   // get a point on ray that sits on the plane spanned by the triangle
   Point3D q = ray(t);
 
@@ -47,7 +46,7 @@ double RayTriangle::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   if((alpha >= 0 && beta >= 0 && gamma >= 0) &&
      (abs(1.0f - (alpha + beta + gamma)) < EP)){
     if(mx < 0 || t < mx){
-      iInfo.iCoordinate = ray(t) + (plane.normal.scale(EP));
+      iInfo.iCoordinate = ray(t);
       iInfo.material = material;
       iInfo.normal = plane.normal;
     }

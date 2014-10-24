@@ -3,6 +3,8 @@
 #include "rayDirectionalLight.h"
 #include "rayScene.h"
 
+const float EP  = 1e-4;
+
 ////////////////////////
 //  Ray-tracing stuff //
 ////////////////////////
@@ -35,10 +37,11 @@ Point3D RayDirectionalLight::getSpecular(Point3D cameraPosition,RayIntersectionI
 }
 int RayDirectionalLight::isInShadow(RayIntersectionInfo& iInfo,RayShape* shape,int& isectCount){
   Point3D L = (Point3D(0,0,0) - direction).unit();
-  Ray3D ray = Ray3D(iInfo.iCoordinate, L);
+  Ray3D ray = Ray3D((iInfo.iCoordinate + L * EP), L);
   RayIntersectionInfo info = RayIntersectionInfo();  
 
-  if(shape->intersect(ray, info, -1.0f) > 0){
+  float inter = shape->intersect(ray, info, -1.0f);
+  if(inter > 0 && inter > EP){
     return 1;
   }
   return 0;

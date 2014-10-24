@@ -3,13 +3,7 @@
 #include "rayScene.h"
 #include "raySphere.h"
 
-const float EP = 0.000001;
-
-inline float eud(Point3D p2, Point3D p1){
-  return sqrt(pow(p2[0] - p1[0], 2) + 
-	      pow(p2[1] - p1[1], 2) + 
-	      pow(p2[2] - p1[2], 2));
-}
+const float EP = 1e-4;
 
 ////////////////////////
 //  Ray-tracing stuff //
@@ -37,7 +31,7 @@ double RaySphere::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
 
       iInfo.material = material;
       iInfo.normal = (coord - center).unit();        
-      iInfo.iCoordinate = coord + (iInfo.normal.scale(EP));
+      iInfo.iCoordinate = coord;
     }
     return dist;
   }

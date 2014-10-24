@@ -46,8 +46,7 @@ Point3D RayScene::GetColor(Ray3D ray,int rDepth,Point3D cLimit){
 	continue;
       }
       ret += l->getDiffuse(camera->position, info);
-      Point3D spec = l->getSpecular(camera->position, info);
-      ret += spec;
+      ret += l->getSpecular(camera->position, info);
     }    
     return ret;
   }
