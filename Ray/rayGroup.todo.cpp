@@ -14,6 +14,9 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   Ray3D t_ray = Mp * ray;
   t_ray.direction = t_ray.direction.unit();
 
+  //if(bBox.intersect(t_ray) < 0){
+  //  return -1;
+  //}
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
     // distance along transformed ray
@@ -39,10 +42,10 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
 
 BoundingBox3D RayGroup::setBoundingBox(void){
   Point3D plist[sNum * 2];
-  for(int i = 0; i < sNum; i = i + 2){
-    int idx = i / 2;
-    plist[i] = shapes[idx]->bBox.p[0];
-    plist[i + 1] = shapes[idx]->bBox.p[1];
+  for(int i = 0; i < sNum; i++){
+    shapes[i]->setBoundingBox();
+    plist[i * 2] = shapes[i]->bBox.p[0];
+    plist[i * 2 + 1] = shapes[i]->bBox.p[1];
   }
   return bBox = BoundingBox3D(plist, sNum * 2);
 }

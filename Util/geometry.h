@@ -22,7 +22,6 @@ public:
 		
 	/** This method returns the dot product of two points.*/
 	double dot(const Point2D& pt) const;
-	
 	/** This method returns the length of a point. */
 	double length(void) const;
 	/** This method returns the square of the length of a point.*/

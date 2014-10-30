@@ -55,11 +55,14 @@ double RayTriangle::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   return -1;
 }
 BoundingBox3D RayTriangle::setBoundingBox(void){
-  Point3D p1, p2;
+  float mx = 1e10;
+  float mn = 1e-10;
+  Point3D p1 = Point3D(mx, mx, mx);
+  Point3D p2 = Point3D(mn, mn, mn); 
   for(int i = 0; i < 3; i++){
     p1[0] = fmin(p1[0], v[i]->position[0]);
     p1[1] = fmin(p1[1], v[i]->position[1]);
-    p1[1] = fmin(p1[2], v[i]->position[2]);
+    p1[2] = fmin(p1[2], v[i]->position[2]);
     p2[0] = fmax(p2[0], v[i]->position[0]);
     p2[1] = fmax(p2[1], v[i]->position[1]);
     p2[2] = fmax(p2[2], v[i]->position[2]);
