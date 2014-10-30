@@ -14,9 +14,9 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   Ray3D t_ray = Mp * ray;
   t_ray.direction = t_ray.direction.unit();
 
-  //if(bBox.intersect(t_ray) < 0){
-  //  return -1;
-  //}
+  if(bBox.intersect(t_ray) < 0){
+    return -1;
+  }
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
     // distance along transformed ray

@@ -60,11 +60,11 @@ Point3D RayScene::GetColor(Ray3D ray,int rDepth,Point3D cLimit){
       Point3D K_t = info.material->transparent;
       Point3D reflD = Reflect(ray.direction, info.normal);
       Ray3D refl = Ray3D(info.iCoordinate + reflD * EP, reflD);			 
-      ret += K_s * GetColor(refl, rDepth - 1, cLimit/K_s);
+      //ret += K_s * GetColor(refl, rDepth - 1, cLimit/K_s);
       Point3D refrD = Point3D();
       if (Refract(ray.direction, info.normal, info.material->refind, refrD)){
 	Ray3D refr = Ray3D(info.iCoordinate + refrD * EP, refrD);	
-	ret += GetColor(refr, rDepth - 1, cLimit/K_t) * K_t;
+	//ret += GetColor(refr, rDepth - 1, cLimit/K_t) * K_t;
       }
     }    
     return ret;
