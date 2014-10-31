@@ -14,27 +14,27 @@ double RayGroup::intersect(Ray3D ray,RayIntersectionInfo& iInfo,double mx){
   Ray3D t_ray = Mp * ray;
   t_ray.direction = t_ray.direction.unit();
 
-  if(bBox.intersect(t_ray) < 0){
+  if(bBox.intersect(ray) < 0){
     return -1;
   }
   for(int i = 0; i < sNum; i++){    
     RayShape* s = shapes[i];    
     // distance along transformed ray
-    float t_hit = s->intersect(t_ray, iInfo, mx);    
+    float t_hit = s->intersect(ray, iInfo, mx);    
     if(t_hit < 0){
       continue;
     }     
     Point3D t_coord = t_ray(t_hit);//iInfo.iCoordinate;
     Point3D r_coord = M * t_coord;
-    float dist = (r_coord - ray.position).length();
+    float dist = t_hit;//(r_coord - ray.position).length();
     // if minD is negative or 
     // there is a hit, and the hit is closer than mind
     if ((mx < 0 && dist > 0) || (dist > 0 && dist < mx)){    
       mx = dist;
       // fix iInfo
-      iInfo.iCoordinate = r_coord;
+      //iInfo.iCoordinate = r_coord;
       // convert the normal
-      iInfo.normal = getNormalMatrix() * iInfo.normal;
+      //iInfo.normal = getNormalMatrix() * iInfo.normal;
     } 
   }
   return mx;

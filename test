@@ -1,4 +1,7 @@
 #/bin/bash
 
+def="test"
+
 make
-./Assignment2 --in Rayfiles/test.ray --out outputs/test.bmp --width 500 --height 500 --rLimit 5 --cLimit 0.0001
+echo "./Assignment2 --in Rayfiles/${1-$def}.ray --out outputs/${1-$def}.bmp --width 500 --height 500 --rLimit 5 --cLimit 0.0001"
+./Assignment2 --in Rayfiles/${1-$def}.ray --out outputs/${1-$def}.bmp --width 500 --height 500 --rLimit 5 --cLimit 0.0001
